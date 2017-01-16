@@ -101,7 +101,12 @@ export class ApiClientService {
         return this.http
             .{{angular2httpMethod}}(this.domain + uri{{#hasPayload}}, JSON.stringify({{#parameters}}{{#isBodyParameter}}{{&camelCaseName}}{{/isBodyParameter}}{{/parameters}}){{/hasPayload}}, { headers: headers, search: queryParameters })
             .map((res: Response) => {
-                return res;
+	   {{#hasJsonResponse}}
+                return res.json();
+	   {{/hasJsonResponse}}
+	   {{^hasJsonResponse}}
+                return res; // TODO: this method does not return JSON response, so you need to handle response by your own
+	   {{/hasJsonResponse}}
             });
     }
 {{/methods}}
